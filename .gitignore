@@ -16,3 +16,5 @@ slow-unit-*
 *.log
 .gdb_history
 *.pyc
+BinDrivers/X64
+BinDrivers/IA32

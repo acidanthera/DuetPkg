@@ -109,6 +109,10 @@
   # FAT Support
   INF  FatPkg/EnhancedFatDxe/Fat.inf
 
+  # Binary Driver Support
+  # INF  RuleOverride=BINARY DuetPkg/BinDrivers/HfsPlus.inf
+  # INF  RuleOverride=BINARY DuetPkg/BinDrivers/OpenUsbKbDxe.inf
+
 [Rule.Common.DXE_CORE]
   FILE DXE_CORE = $(NAMED_GUID) {
       PE32     PE32           $(INF_OUTPUT)/$(MODULE_NAME).efi
@@ -120,6 +124,14 @@
   FILE DRIVER = $(NAMED_GUID) {
     DXE_DEPEX    DXE_DEPEX Optional      $(INF_OUTPUT)/$(MODULE_NAME).depex
         PE32     PE32                    $(INF_OUTPUT)/$(MODULE_NAME).efi
+    UI       STRING ="$(MODULE_NAME)" Optional
+    VERSION  STRING ="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
+  }
+
+[Rule.Common.UEFI_DRIVER.BINARY]
+  FILE DRIVER = $(NAMED_GUID) {
+    DXE_DEPEX    DXE_DEPEX Optional      |.depex
+        PE32     PE32                    |.efi
     UI       STRING ="$(MODULE_NAME)" Optional
     VERSION  STRING ="$(INF_VERSION)" Optional BUILD_NUM=$(BUILD_NUMBER)
   }
