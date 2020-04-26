@@ -15,22 +15,18 @@
 #  WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #
 ##
+
 [Defines]
   PLATFORM_NAME                  = DuetPkg
-  PLATFORM_GUID                  = 199E24E0-0989-42aa-87F2-611A8C397E72
+  PLATFORM_GUID                  = 199E24E0-0989-42AA-87F2-611A8C397E72
   PLATFORM_VERSION               = 0.92
   DSC_SPECIFICATION              = 0x00010006
   OUTPUT_DIRECTORY               = Build/DuetPkg
   SUPPORTED_ARCHITECTURES        = X64|IA32
-  BUILD_TARGETS                  = RELEASE|DEBUG|NOOPT
+  BUILD_TARGETS                  = RELEASE|DEBUG
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = DuetPkg/DuetPkg.fdf
 
-################################################################################
-#
-# Library Class section - list of all Library Classes needed by this Platform.
-#
-################################################################################
 [LibraryClasses]
   #
   # Entry point
@@ -195,8 +191,6 @@
   # Foreign file system support
   FatPkg/EnhancedFatDxe/Fat.inf
 
-  DuetPkg/Platform/BiosVideo/BiosVideo.inf
-
   # IDE/AHCI Support
   MdeModulePkg/Bus/Pci/SataControllerDxe/SataControllerDxe.inf
   MdeModulePkg/Bus/Ata/AtaAtapiPassThru/AtaAtapiPassThru.inf
@@ -229,6 +223,7 @@
 
   # Bios Thunk
   DuetPkg/Platform/LegacyRegion2Dxe/LegacyRegion2Dxe.inf
+  DuetPkg/Platform/BiosVideo/BiosVideo.inf
 
 [BuildOptions]
   MSFT:*_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -DMDEPKG_NDEBUG -Dinline=__inline

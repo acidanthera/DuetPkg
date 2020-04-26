@@ -59,7 +59,12 @@ package() {
 cd $(dirname "$0")
 
 BOOTSECTOR_BIN_DIR="$(pwd)/BootSector/bin"
-FV_TOOLS="$(pwd)/BaseTools/bin"
+FV_TOOLS="$(pwd)/BaseTools/bin.$(uname)"
+
+if [ ! -d "${FV_TOOLS}" ]; then
+  echo "ERROR: You need to compile BaseTools for your platform!"
+  exit 1
+fi
 
 if [ "${TARGETARCH}" = "" ]; then
   TARGETARCH="X64"
