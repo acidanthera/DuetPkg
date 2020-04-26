@@ -57,14 +57,9 @@
   gEfiIsaAcpiProtocolGuid        = { 0x64a892dc, 0x5561, 0x4536, { 0x92, 0xc7, 0x79, 0x9b, 0xfc, 0x18, 0x33, 0x55 }}
 
 [PcdsFixedAtBuild]
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVendor|L"Acidanthera"|VOID*|0x10010003
-  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00010010|UINT32|0x10010004
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x0|UINT32|0x10010006
-  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x0|UINT32|0x10010007
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiFloppyAEnable|FALSE|BOOLEAN|0x10010009
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiFloppyBEnable|FALSE|BOOLEAN|0x10010010
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiCom1Enable|FALSE|BOOLEAN|0x10010011
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiCom2Enable|FALSE|BOOLEAN|0x10010012
-  gPcAtChipsetPkgTokenSpaceGuid.Pcd8259LegacyModeEdgeLevel|0x0000|UINT16|0x00000002
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiPs2KeyboardEnable|TRUE|BOOLEAN|0x00000005
   gPcAtChipsetPkgTokenSpaceGuid.PcdIsaAcpiPs2MouseEnable|TRUE|BOOLEAN|0x00000006
