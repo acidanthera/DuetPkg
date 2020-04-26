@@ -57,7 +57,6 @@
   INF  MdeModulePkg/Universal/HiiDatabaseDxe/HiiDatabaseDxe.inf
 
   INF  MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
-  INF  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   INF  DuetPkg/Platform/SmbiosGenDxe/SmbiosGen.inf
   INF  DuetPkg/Platform/BdsDxe/BdsDxe.inf
   INF  MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
@@ -105,8 +104,9 @@
   INF  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   INF  MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
 
-  # ACPI Support
-  INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
+  # Convenience ACPI and SMBIOS protocols, optional.
+  # INF  MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
+  # INF  MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
 
   # FAT Support
   INF  FatPkg/EnhancedFatDxe/Fat.inf
