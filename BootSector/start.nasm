@@ -251,7 +251,7 @@ _start:
 %ifdef GENPAGE
         mov     cr3, edx
 %elifdef USE_LOW_EBDA
-        mov     eax, 0x70000
+        mov     eax, 0x67000
         mov     cr3, eax
 %else
         mov     eax, 0x90000
