@@ -31,18 +31,17 @@ EfiLdrPeCoffLoadPeRelocate (
 
 EFI_STATUS
 EfiLdrPeCoffImageRead (
-    IN VOID                 *FHand,
-    IN UINTN                Offset,
-    IN OUT UINTN            ReadSize,
-    OUT VOID                *Buffer
-    );
+  IN VOID                 *FHand,
+  IN UINTN                Offset,
+  IN OUT UINTN            ReadSize,
+  OUT VOID                *Buffer
+  );
 
 VOID *
 EfiLdrPeCoffImageAddress (
   IN EFILDR_LOADED_IMAGE     *Image,
   IN UINTN                   Address
   );
-
 
 EFI_STATUS
 EfiLdrPeCoffSetImageType (
@@ -306,8 +305,6 @@ EfiLdrPeCoffLoadPeImage (
       return EFI_LOAD_ERROR;
     }
 
-//    DEBUG((D_LOAD, "LoadPe: Section %d, loaded at %x\n", Index, Base));
-
     //
     // Read the section
     //
@@ -410,7 +407,7 @@ EfiLdrPeCoffLoadPeRelocate (
     return EFI_LOAD_ERROR;
   }
 
-  NoFixupPages = EFI_SIZE_TO_PAGES(RelocDir->Size / sizeof(UINT16) * sizeof(UINTN));
+  NoFixupPages = EFI_SIZE_TO_PAGES (RelocDir->Size / sizeof(UINT16) * sizeof(UINTN));
   Image->FixupData = (UINT8*) FindSpace (NoFixupPages, NumberOfMemoryMapEntries, EfiMemoryDescriptor, EfiRuntimeServicesData, EFI_MEMORY_WB);
   if (Image->FixupData == 0) {
     return EFI_OUT_OF_RESOURCES;
@@ -531,19 +528,10 @@ EfiLdrPeCoffImageAddress (
   FixedAddress = Image->ImageAdjust + Address;
 
   if ((FixedAddress < Image->ImageBase) || (FixedAddress > Image->ImageEof)) {
-//    DEBUG((D_LOAD|D_ERROR, "PeCoffImageAddress: pointer is outside of image\n"));
     FixedAddress = NULL;
   }
 
-//  DEBUG((
-//    D_LOAD,
-//    "PeCoffImageAddress: ImageBase %x, ImageEof %x, Address %x, FixedAddress %x\n", 
-//    Image->ImageBase,
-//    Image->ImageEof,
-//    Address,
-//    FixedAddress
-//    ));
-    return FixedAddress;
+  return FixedAddress;
 }
 
 
@@ -606,4 +594,3 @@ EfiLdrPeCoffCheckImageMachineType (
 
   return Status;
 }
-
