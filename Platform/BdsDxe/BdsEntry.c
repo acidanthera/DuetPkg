@@ -153,7 +153,7 @@ BdsBootDeviceSelect (
     //
     DevicePath = FileDevicePath (
       FileSystemHandles[Index],
-      L"\\EFI\\OC\\Bootstrap\\Bootstrap.efi"
+      L"\\EFI\\OC\\OpenCore.efi"
       );
   
     if (DevicePath == NULL) {
