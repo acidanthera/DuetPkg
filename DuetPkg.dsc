@@ -174,9 +174,9 @@
   MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
 
   # ISA Support
-  DuetPkg/Platform/IsaAcpiDxe/IsaAcpi.inf
-  MdeModulePkg/Bus/Isa/IsaBusDxe/IsaBusDxe.inf
+  OvmfPkg/SioBusDxe/SioBusDxe.inf
   MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
+  MdeModulePkg/Bus/Isa/Ps2MouseDxe/Ps2MouseDxe.inf
 
   # ACPI Support
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf

@@ -87,17 +87,19 @@
   INF  MdeModulePkg/Bus/Pci/UhciDxe/UhciDxe.inf
   INF  MdeModulePkg/Bus/Pci/EhciDxe/EhciDxe.inf
   INF  MdeModulePkg/Bus/Usb/UsbBusDxe/UsbBusDxe.inf
-  INF  MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
   INF  MdeModulePkg/Bus/Usb/UsbMassStorageDxe/UsbMassStorageDxe.inf
 
   # ISA Support
-  INF  DuetPkg/Platform/IsaAcpiDxe/IsaAcpi.inf
-  INF  MdeModulePkg/Bus/Isa/IsaBusDxe/IsaBusDxe.inf
+  INF  OvmfPkg/SioBusDxe/SioBusDxe.inf
 
   # Keyboard Input Support
   # Disabled to avoid conflicts with OpenCore
   # INF  MdeModulePkg/Bus/Isa/Ps2KeyboardDxe/Ps2KeyboardDxe.inf
   # INF  MdeModulePkg/Bus/Usb/UsbKbDxe/UsbKbDxe.inf
+
+  # Mouse Input Support
+  # INF  MdeModulePkg/Bus/Isa/Ps2MouseDxe/Ps2MouseDxe.inf
+  INF  MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
 
   INF  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
   INF  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
