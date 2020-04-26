@@ -1,6 +1,8 @@
 Duet
 ====
 
+[![Build Status](https://travis-ci.com/acidanthera/DuetPkg.svg?branch=master)](https://travis-ci.com/acidanthera/DuetPkg)
+
 Acidanthera variant of DuetPkg. Specialties:
 
 - BDS is simplified to load `EFI/OC/Bootstrap/Bootstrap.efi`.
