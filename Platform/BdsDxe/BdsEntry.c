@@ -21,6 +21,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #include <Guid/GlobalVariable.h>
 #include <Guid/EventGroup.h>
 
+#include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
 #include <Library/DevicePathLib.h>
 #include <Library/DuetBdsLib.h>
@@ -73,6 +74,22 @@ BdsInitialize (
   )
 {
   EFI_STATUS  Status;
+  VOID        *ReturnUnsupported;
+
+#ifdef MDE_CPU_X64
+  STATIC UINT8 mReturnUnsupported[] = {0x48, 0xB8, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x80, 0xC3};
+#else
+  STATIC UINT8 mReturnUnsupported[] = {0xB8, 0x03, 0x00, 0x00, 0x80, 0xC3};
+#endif  
+
+  //
+  // Provide dummy functions
+  //
+  Status = gBS->AllocatePool (EfiRuntimeServicesCode, sizeof (mReturnUnsupported), (VOID **) &ReturnUnsupported);
+  ASSERT_EFI_ERROR (Status);
+  CopyMem (ReturnUnsupported, mReturnUnsupported, sizeof (mReturnUnsupported));
+  gRT->UpdateCapsule                    = ReturnUnsupported;
+  gRT->QueryCapsuleCapabilities         = ReturnUnsupported;
 
   //
   // Install protocol interface
