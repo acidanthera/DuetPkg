@@ -1,4 +1,7 @@
 language: cpp
+env:
+  global:
+  - FORCE_INSTALL=1
 
 matrix:
   include:
