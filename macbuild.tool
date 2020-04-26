@@ -85,7 +85,7 @@ if [ "${INTREE}" != "" ]; then
   imgbuild
 else
   TARGETS=(DEBUG RELEASE)
-  ARCHS=(IA32 X64)
+  ARCHS=(X64 IA32)
   SELFPKG=DuetPkg
   DEPNAMES=('EfiPkg')
   DEPURLS=('https://github.com/acidanthera/EfiPkg')
