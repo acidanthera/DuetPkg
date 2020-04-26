@@ -1,5 +1,5 @@
-Duet
-====
+DuetPkg
+=======
 
 [![Build Status](https://travis-ci.com/acidanthera/DuetPkg.svg?branch=master)](https://travis-ci.com/acidanthera/DuetPkg)
 
