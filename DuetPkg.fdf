@@ -53,7 +53,6 @@
 
   INF  MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
 
-  INF  MdeModulePkg/Universal/CapsuleRuntimeDxe/CapsuleRuntimeDxe.inf
   INF  MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF  MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
   INF  MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf

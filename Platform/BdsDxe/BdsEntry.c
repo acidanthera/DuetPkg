@@ -30,6 +30,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #include <Library/UefiRuntimeServicesTableLib.h>
 #include <Library/UefiLib.h>
 
+#include <Protocol/Capsule.h>
 #include <Protocol/VariableLock.h>
 
 ///
@@ -79,6 +80,7 @@ BdsInitialize (
   Status = gBS->InstallMultipleProtocolInterfaces (
                   &gBdsHandle,
                   &gEfiBdsArchProtocolGuid, &gBds,
+                  &gEfiCapsuleArchProtocolGuid, NULL,
                   NULL
                   );
   ASSERT_EFI_ERROR (Status);
