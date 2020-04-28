@@ -210,9 +210,9 @@
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x0
 
 [BuildOptions]
-  MSFT:NOOPT_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -Dinline=__inline
-  MSFT:DEBUG_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -Dinline=__inline -DMDEPKG_NDEBUG
-  MSFT:RELEASE_*_*_CC_FLAGS      = /FAcs /FR$(@R).SBR -Dinline=__inline -DMDEPKG_NDEBUG
+  MSFT:NOOPT_*_*_CC_FLAGS        = /FAcs -Dinline=__inline
+  MSFT:DEBUG_*_*_CC_FLAGS        = /FAcs -Dinline=__inline -DMDEPKG_NDEBUG
+  MSFT:RELEASE_*_*_CC_FLAGS      = /FAcs -Dinline=__inline -DMDEPKG_NDEBUG
 
   XCODE:NOOPT_*_*_CC_FLAGS   = -fno-unwind-tables -O0
   XCODE:DEBUG_*_*_CC_FLAGS   = -fno-unwind-tables -flto -Os -DMDEPKG_NDEBUG
