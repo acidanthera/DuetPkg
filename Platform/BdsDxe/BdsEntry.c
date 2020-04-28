@@ -88,8 +88,8 @@ BdsInitialize (
   Status = gBS->AllocatePool (EfiRuntimeServicesCode, sizeof (mReturnUnsupported), (VOID **) &ReturnUnsupported);
   ASSERT_EFI_ERROR (Status);
   CopyMem (ReturnUnsupported, mReturnUnsupported, sizeof (mReturnUnsupported));
-  gRT->UpdateCapsule                    = ReturnUnsupported;
-  gRT->QueryCapsuleCapabilities         = ReturnUnsupported;
+  gRT->UpdateCapsule                    = (EFI_UPDATE_CAPSULE) ReturnUnsupported;
+  gRT->QueryCapsuleCapabilities         = (EFI_QUERY_CAPSULE_CAPABILITIES) ReturnUnsupported;
 
   //
   // Install protocol interface
