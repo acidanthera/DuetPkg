@@ -61,38 +61,6 @@ EFI_GRAPHICS_OUTPUT_BLT_PIXEL  mVgaColorToGraphicsOutputColor[] = {
   {0xff, 0xff, 0xff, 0x00}  // WHITE
 };
 
-//
-// Standard timing defined by VESA EDID
-//
-VESA_BIOS_EXTENSIONS_EDID_TIMING mEstablishedEdidTiming[] = {
-  //
-  // Established Timing I
-  //
-  {800, 600, 60},
-  {800, 600, 56},
-  {640, 480, 75},
-  {640, 480, 72},
-  {640, 480, 67},
-  {640, 480, 60},
-  {720, 400, 88},
-  {720, 400, 70},
-  //
-  // Established Timing II
-  //
-  {1280, 1024, 75},
-  {1024,  768, 75},
-  {1024,  768, 70},
-  {1024,  768, 60},
-  {1024,  768, 87},
-  {832,   624, 75},
-  {800,   600, 75},
-  {800,   600, 72},
-  //
-  // Established Timing III
-  //
-  {1152, 870, 75}
-};
-
 /**
   Install child handle for a detect BiosVideo device and install related protocol
   into this handle, such as EFI_GRAPHIC_OUTPUT_PROTOCOL.
