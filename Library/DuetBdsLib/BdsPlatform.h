@@ -31,6 +31,13 @@ extern EFI_DEVICE_PATH_PROTOCOL   *gPlatformDriverOption[];
 extern EFI_DEVICE_PATH_PROTOCOL   *gPlatformRootBridges[];
 extern ACPI_HID_DEVICE_PATH       gPnpPs2KeyboardDeviceNode;
 
+//
+// attributes for reserved memory before it is promoted to system memory
+//
+#define EFI_MEMORY_PRESENT      0x0100000000000000ULL
+#define EFI_MEMORY_INITIALIZED  0x0200000000000000ULL
+#define EFI_MEMORY_TESTED       0x0400000000000000ULL
+
 #define VarConsoleInpDev        L"ConInDev"
 #define VarConsoleInp           L"ConIn"
 #define VarConsoleOutDev        L"ConOutDev"

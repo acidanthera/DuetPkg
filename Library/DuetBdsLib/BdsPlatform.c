@@ -39,6 +39,7 @@ Abstract:
 #include <Library/UefiBootServicesTableLib.h>
 
 #include <Protocol/PciIo.h>
+#include <Protocol/GenericMemoryTest.h>
 
 EFI_GUID *gTableGuidArray[] = {
   &gEfiAcpi10TableGuid,
@@ -319,6 +320,9 @@ UpdateMemoryMap (
   )
 {
   EFI_STATUS                      Status;
+  UINTN                           NumberOfDescriptors;
+  EFI_GCD_MEMORY_SPACE_DESCRIPTOR *MemorySpaceMap;
+  UINT64                          Capabilities;
   EFI_PEI_HOB_POINTERS            GuidHob;
   VOID                            *Table;
   MEMORY_DESC_HOB                 MemoryDescHob;
@@ -327,6 +331,41 @@ UpdateMemoryMap (
   EFI_GCD_MEMORY_SPACE_DESCRIPTOR Descriptor;
   EFI_PHYSICAL_ADDRESS            FirstNonConventionalAddr;
 
+  //
+  // Promote reserved memory to system memory.
+  //
+  Status = gDS->GetMemorySpaceMap (&NumberOfDescriptors, &MemorySpaceMap);
+  ASSERT_EFI_ERROR (Status);
+
+  for (Index = 0; Index < NumberOfDescriptors; ++Index) {
+    Capabilities = MemorySpaceMap[Index].Capabilities;
+
+    if (MemorySpaceMap[Index].GcdMemoryType == EfiGcdMemoryTypeReserved
+      && (Capabilities & (EFI_MEMORY_PRESENT | EFI_MEMORY_INITIALIZED | EFI_MEMORY_TESTED))
+        == (EFI_MEMORY_PRESENT | EFI_MEMORY_INITIALIZED)) {
+      Status = gDS->RemoveMemorySpace (
+        MemorySpaceMap[Index].BaseAddress,
+        MemorySpaceMap[Index].Length
+        );
+      if (!EFI_ERROR (Status)) {
+        Status = gDS->AddMemorySpace (
+          (Capabilities & EFI_MEMORY_MORE_RELIABLE) == EFI_MEMORY_MORE_RELIABLE
+            ? EfiGcdMemoryTypeMoreReliable : EfiGcdMemoryTypeSystemMemory,
+          MemorySpaceMap[Index].BaseAddress,
+          MemorySpaceMap[Index].Length,
+          Capabilities &~ (EFI_MEMORY_PRESENT | EFI_MEMORY_INITIALIZED | EFI_MEMORY_TESTED | EFI_MEMORY_RUNTIME)
+          );
+      }
+
+      ASSERT_EFI_ERROR (Status);
+    }
+  }
+
+  gBS->FreePool (MemorySpaceMap);
+
+  //
+  // Add ACPINVS, ACPIReclaim, and Reserved memory to MemoryMap.
+  //
   GuidHob.Raw = GetFirstGuidHob (&gLdrMemoryDescriptorGuid);
   if (GuidHob.Raw == NULL) {
     return;
@@ -340,9 +379,6 @@ UpdateMemoryMap (
   MemoryDescHob.MemDescCount = *(UINTN *)Table;
   MemoryDescHob.MemDesc      = *(EFI_MEMORY_DESCRIPTOR **)((UINTN)Table + sizeof(UINTN));
 
-  //
-  // Add ACPINVS, ACPIReclaim, and Reserved memory to MemoryMap.
-  //
   FirstNonConventionalAddr = 0xFFFFFFFF;
   for (Index = 0; Index < MemoryDescHob.MemDescCount; Index++) {
     if (MemoryDescHob.MemDesc[Index].PhysicalStart < 0x100000) {
@@ -949,7 +985,7 @@ Returns:
 }
 
 EFI_STATUS
-PlatformBdsConnectConsole (
+BdsConnectConsole (
   IN BDS_CONSOLE_CONNECT_ENTRY   *PlatformConsole
   )
 /*++
@@ -1069,10 +1105,7 @@ Returns:
 
 --*/
 {
-  //
-  // Connect platform console
-  //
-  PlatformBdsConnectConsole (gPlatformConsole);
+  BdsConnectConsole (gPlatformConsole);
 
   BdsLibConnectAll ();
 }
