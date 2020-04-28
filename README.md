@@ -34,3 +34,6 @@ Changing resulting firmware size is done in three places:
 
 - `NumBlocks` in `DuetPkg.fdf` (number of 64 KB blocks in the firmware).
 - `PAGE_TABLE` 64-bit PT address limiting firmware size (`macbuild.tool` and `start.nasm`).
+
+*Note*: OHCI driver is not bundled with DuetPkg (and EDK II) and can be found in
+`edk2-platforms/Silicon/Intel/QuarkSocPkg/QuarkSouthCluster/Usb/Ohci/Dxe`.
