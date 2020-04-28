@@ -39,7 +39,6 @@ Abstract:
 #include <Library/UefiBootServicesTableLib.h>
 
 #include <Protocol/PciIo.h>
-#include <Protocol/GenericMemoryTest.h>
 
 EFI_GUID *gTableGuidArray[] = {
   &gEfiAcpi10TableGuid,
