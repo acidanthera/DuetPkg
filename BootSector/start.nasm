@@ -55,6 +55,14 @@ IA32_EFER:              equ 0xC0000080
   %undef GENPAGE
 %endif
 
+%ifdef GENPAGE
+  ; PageTableSegment is used.
+%elifdef USE_LOW_EBDA
+  %assign PAGE_TABLE 0x67000
+%else
+  %assign PAGE_TABLE 0x90000
+%endif
+
         bits 16
 
         section .text start=BASE_ADR_16
@@ -250,11 +258,8 @@ _start:
 ;
 %ifdef GENPAGE
         mov     cr3, edx
-%elifdef USE_LOW_EBDA
-        mov     eax, 0x67000
-        mov     cr3, eax
 %else
-        mov     eax, 0x90000
+        mov     eax, PAGE_TABLE
         mov     cr3, eax
 %endif
 
