@@ -3,6 +3,13 @@ CFLAGS ?= -O3 -s
 MKDIR ?= mkdir
 RM ?= /bin/rm
 
+ifneq ($(OS),Windows_NT)
+	UNAME_S := $(shell uname -s)
+	ifeq ($(UNAME_S),Darwin)
+		CFLAGS+=-mmacosx-version-min=10.6
+	endif
+endif
+
 BINDIR=bin.$(shell uname)
 PRODUCTS=$(BINDIR)/GenPage $(BINDIR)/EfiLdrImage
 
