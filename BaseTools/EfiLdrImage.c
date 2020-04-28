@@ -187,6 +187,7 @@ Returns:
   EFILDR_IMAGE  EfiLdrImage[MAX_PE_IMAGES];
   char*         OutputFileName = NULL;
   char*         InputFileNames[MAX_PE_IMAGES + 1];
+  char*         InputName;
   uint8_t       InputFileCount = 0;
   uint64_t      DebugLevel = 0;
   uint64_t      VerboseLevel = 0;
@@ -309,7 +310,18 @@ Returns:
     //
     EfiLdrImage[i].Offset = EfiLdrHeader.FileLength;
     EfiLdrImage[i].Length = (uint32_t) filesize;
-    strncpy ((char*) EfiLdrImage[i].FileName, InputFileNames[i], sizeof (EfiLdrImage[i].FileName) - 1);
+    InputName = strrchr(InputFileNames[i], '/');
+    if (InputName == NULL) {
+      InputName = strrchr(InputFileNames[i], '\\');
+      if (InputName == NULL) {
+        InputName = InputFileNames[i];
+      } else {
+        ++InputName;
+      }
+    } else {
+      ++InputName;
+    }
+    strncpy ((char*) EfiLdrImage[i].FileName, InputName, sizeof (EfiLdrImage[i].FileName) - 1);
     EfiLdrHeader.FileLength += (uint32_t) filesize;
     EfiLdrHeader.NumberOfImages++;
   }

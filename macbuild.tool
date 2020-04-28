@@ -15,10 +15,10 @@ imgbuild() {
 
   echo "Generating Loader Image..."
 
-  GenFw --rebase 0x10000 -o "${BUILD_DIR_ARCH}/EfiLoader.efi" \
+  GenFw --rebase 0x10000 -o "${BUILD_DIR_ARCH}/EfiLoaderRebased.efi" \
     "${BUILD_DIR_ARCH}/EfiLoader.efi" || exit 1
   "${FV_TOOLS}/EfiLdrImage" -o "${BUILD_DIR}/FV/Efildr${TARGETARCH}" \
-    "${BUILD_DIR_ARCH}/EfiLoader.efi" "${BUILD_DIR}/FV/DxeIpl${TARGETARCH}.z" \
+    "${BUILD_DIR_ARCH}/EfiLoaderRebased.efi" "${BUILD_DIR}/FV/DxeIpl${TARGETARCH}.z" \
     "${BUILD_DIR}/FV/DxeMain${TARGETARCH}.z" "${BUILD_DIR}/FV/DUETEFIMAINFV${TARGETARCH}.z" || exit 1
 
   PAGE_TABLE=0x67000
