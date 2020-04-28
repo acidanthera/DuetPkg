@@ -80,6 +80,7 @@ Error (
   va_start (List, MsgFmt);
   vprintf (MsgFmt, List);
   va_end (List);
+  puts("");
 }
 
 void
