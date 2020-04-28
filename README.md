@@ -28,12 +28,9 @@ TARGETARCH=X64 TARGET=RELEASE INTREE=1 DuetPkg/macbuild.tool
 ## Configuration
 
 Builtin available drivers are set in `DuetPkg.fdf` (included drivers) and `DuetPkg.dsc`
-(compiled drivers, may not be included).
-
-Changing resulting firmware size is done in three places:
-
-- `NumBlocks` in `DuetPkg.fdf` (number of 64 KB blocks in the firmware).
-- `PAGE_TABLE` 64-bit PT address limiting firmware size (`macbuild.tool` and `start.nasm`).
+(compiled drivers, may not be included). Adding more drivers may result in the need to
+change firmware volume size. To do this update `NumBlocks` in `DuetPkg.fdf`
+(number of 64 KB blocks in the firmware).
 
 *Note*: OHCI driver is not bundled with DuetPkg (and EDK II) and can be found in
 `edk2-platforms/Silicon/Intel/QuarkSocPkg/QuarkSouthCluster/Usb/Ohci/Dxe`.

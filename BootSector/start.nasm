@@ -50,17 +50,13 @@ IA32_EFER:              equ 0xC0000080
   %ifndef GENPAGE
         section .pagezero start=0
         times BASE_ADR_16 db 0
+
+    %ifndef PAGE_TABLE
+        %error "PAGE_TABLE is not defined!"
+    %endif
   %endif
 %else
   %undef GENPAGE
-%endif
-
-%ifdef GENPAGE
-  ; PageTableSegment is used.
-%elifdef USE_LOW_EBDA
-  %assign PAGE_TABLE 0x67000
-%else
-  %assign PAGE_TABLE 0x90000
 %endif
 
         bits 16

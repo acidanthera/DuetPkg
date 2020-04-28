@@ -21,13 +21,31 @@ imgbuild() {
     "${BUILD_DIR_ARCH}/EfiLoaderRebased.efi" "${BUILD_DIR}/FV/DxeIpl${TARGETARCH}.z" \
     "${BUILD_DIR}/FV/DxeMain${TARGETARCH}.z" "${BUILD_DIR}/FV/DUETEFIMAINFV${TARGETARCH}.z" || exit 1
 
-  cat "${BOOTSECTOR_BIN_DIR}/Start${TARGETARCH}.com" "${BOOTSECTOR_BIN_DIR}/Efi${TARGETARCH}.com" \
+  # Calculate page table location for 64-bit builds.
+  # Page table must be 4K aligned, bootsectors are 4K each, and 0x20000 is base address.
+  if [ "${TARGETARCH}" = "X64" ]; then
+    EL_SIZE=$(stat -f "%z" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
+    export PAGE_TABLE_OFF=$(printf "0x%x" $(((${EL_SIZE} + 0x2000 + 0xFFF) & ~0xFFF)))
+    export PAGE_TABLE=$(printf "0x%x" $((${PAGE_TABLE_OFF} + 0x20000)))
+    BOOTSECTOR_SUFFIX="_${PAGE_TABLE}"
+  else
+    BOOTSECTOR_SUFFIX=""
+  fi
+
+  # Build bootsectors.
+  mkdir -p "${BOOTSECTORS}" || exit 1
+  cd "${BOOTSECTORS}"/.. || exit 1
+  make || exit 1
+  cd - || exit 1
+
+  # Concatenate bootsector into the resulting image.
+  cat "${BOOTSECTORS}/Start${TARGETARCH}${BOOTSECTOR_SUFFIX}.com" "${BOOTSECTORS}/Efi${TARGETARCH}.com" \
     "${BUILD_DIR}/FV/Efildr${TARGETARCH}" > "${BUILD_DIR}/FV/Efildr${TARGETARCH}Pure" || exit 1
 
+  # Append page table and skip empty data in 64-bit mode.
   if [ "${TARGETARCH}" = "X64" ]; then
-    PAGE_TABLE=0x67000
     "${FV_TOOLS}/GenPage" "${BUILD_DIR}/FV/Efildr${TARGETARCH}Pure" \
-      -b ${PAGE_TABLE} -f $((${PAGE_TABLE} - 0x20000)) \
+      -b "${PAGE_TABLE}" -f "${PAGE_TABLE_OFF}" \
       -o "${BUILD_DIR}/FV/Efildr${TARGETARCH}Out" || exit 1
 
     dd if="${BUILD_DIR}/FV/Efildr${TARGETARCH}Out" of="${BUILD_DIR_ARCH}/boot" bs=512 skip=1 || exit 1
@@ -54,7 +72,7 @@ package() {
 
 cd $(dirname "$0")
 
-BOOTSECTOR_BIN_DIR="$(pwd)/BootSector/bin"
+BOOTSECTORS="$(pwd)/BootSector/bin"
 FV_TOOLS="$(pwd)/BaseTools/bin.$(uname)"
 
 if [ ! -d "${FV_TOOLS}" ]; then

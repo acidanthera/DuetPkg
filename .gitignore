@@ -18,3 +18,4 @@ slow-unit-*
 *.pyc
 BinDrivers/X64
 BinDrivers/IA32
+BootSector/bin
