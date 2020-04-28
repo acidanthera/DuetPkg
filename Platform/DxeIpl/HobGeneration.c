@@ -607,7 +607,7 @@ Return:
   // Prepare Low Memory
   // 0x18 pages is 72 KB.
   //
-  EbdaAddress = ((UINT64)(*(UINT16 *)(UINTN)(EBDA_VALUE_ADDRESS))) << 4;
+  EbdaAddress = LShiftU64 (*(UINT16 *)(UINTN)(EBDA_VALUE_ADDRESS), 4);
   if (EbdaAddress < 0x90000 || EbdaAddress > EFI_MEMORY_BELOW_1MB_END) {
     //
     // ** CHANGE **
