@@ -213,8 +213,6 @@ extern UINT64                      gAllZero;
 #include "PciEnumerator.h"
 #include "PciEnumeratorSupport.h"
 #include "PciDriverOverride.h"
-#include "PciRomTable.h"
-#include "PciOptionRomSupport.h"
 #include "PciPowerManagement.h"
 
 

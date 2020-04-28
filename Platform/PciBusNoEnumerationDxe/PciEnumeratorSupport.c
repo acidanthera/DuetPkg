@@ -378,25 +378,11 @@ Returns:
     );
   
   //
-  // Detect this function has option rom
+  // ** CHANGE **
+  // PCI Option ROM support removed (continuation of patch by nms42).
   //
   if (gFullEnumeration) {
-
-    if (!IS_CARDBUS_BRIDGE (Pci)) {
-
-      GetOpRomInfo (PciIoDevice);
-
-    }
-
     ResetPowerManagementFeature (PciIoDevice);
-    
-  } 
-  else {
-    PciRomGetRomResourceFromPciOptionRomTable (
-      &gPciBusDriverBinding,
-      PciIoDevice->PciRootBridgeIo,
-      PciIoDevice
-      );
   }
 
  
@@ -1282,9 +1268,9 @@ Returns:
   }
 
   //
-  // Load all EFI Drivers from all PCI Option ROMs behind the PCI Root Bridge 
+  // ** CHANGE **
+  // PCI Option ROM support removed (continuation of patch by nms42).
   //
-  PciRomLoadEfiDriversFromOptionRomTable (&gPciBusDriverBinding, PciRootBridgeIo);
 
   Status = PciRootBridgeIo->Configuration (PciRootBridgeIo, (VOID **) &Descriptors);
 

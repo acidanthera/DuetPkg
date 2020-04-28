@@ -170,11 +170,6 @@ PcatPciRootBridgeParseBars (
   );
 
 EFI_STATUS
-ScanPciRootBridgeForRoms(
-  EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL  *IoDev
-  );
-
-EFI_STATUS
 PcatRootBridgeDevicePathConstructor (
   IN EFI_DEVICE_PATH_PROTOCOL  **Protocol,
   IN UINTN                     RootBridgeNumber,

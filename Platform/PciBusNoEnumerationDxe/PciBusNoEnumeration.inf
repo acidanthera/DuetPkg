@@ -45,14 +45,10 @@
   PciDeviceSupport.h
   PciEnumerator.h
   PciEnumeratorSupport.h
-  PciOptionRomSupport.h
-  PciRomTable.h
   PciPowerManagement.h
   PciPowerManagement.c
-  PciRomTable.c
   PciDriverOverride.h
   PciDriverOverride.c
-  PciOptionRomSupport.c
   PciEnumerator.c
   PciEnumeratorSupport.c
   PciCommand.c

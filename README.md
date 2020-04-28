@@ -8,6 +8,7 @@ Acidanthera variant of DuetPkg. Specialties:
 - Significantly improved boot performance.
 - BDS is simplified to load `EFI/OC/OpenCore.efi`.
 - EDID support removed for performance and compatibility.
+- PCI option ROM support removed for security and performance.
 - Setup and graphical interface removed.
 - Resolved PCIe device path instead of PCI.
 - Increased variable storage size to 64 KB.
