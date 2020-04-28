@@ -23,7 +23,7 @@
   DSC_SPECIFICATION              = 0x00010006
   OUTPUT_DIRECTORY               = Build/DuetPkg
   SUPPORTED_ARCHITECTURES        = X64|IA32
-  BUILD_TARGETS                  = RELEASE|DEBUG
+  BUILD_TARGETS                  = RELEASE|DEBUG|NOOPT
   SKUID_IDENTIFIER               = DEFAULT
   FLASH_DEFINITION               = DuetPkg/DuetPkg.fdf
 
@@ -210,8 +210,14 @@
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x0
 
 [BuildOptions]
-  MSFT:*_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -DMDEPKG_NDEBUG -Dinline=__inline
-  XCODE:NOOPT_*_*_CC_FLAGS   = -fno-unwind-tables -O0 -DMDEPKG_NDEBUG
+  MSFT:NOOPT_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -Dinline=__inline
+  MSFT:DEBUG_*_*_CC_FLAGS        = /FAcs /FR$(@R).SBR -Dinline=__inline -DMDEPKG_NDEBUG
+  MSFT:RELEASE_*_*_CC_FLAGS      = /FAcs /FR$(@R).SBR -Dinline=__inline -DMDEPKG_NDEBUG
+
+  XCODE:NOOPT_*_*_CC_FLAGS   = -fno-unwind-tables -O0
   XCODE:DEBUG_*_*_CC_FLAGS   = -fno-unwind-tables -flto -Os -DMDEPKG_NDEBUG
   XCODE:RELEASE_*_*_CC_FLAGS = -fno-unwind-tables -flto -Os -DMDEPKG_NDEBUG
-  GCC:*_*_*_CC_FLAGS         = -DMDEPKG_NDEBUG
+
+  GCC:NOOPT_*_*_CC_FLAGS     =
+  GCC:DEBUG_*_*_CC_FLAGS     = -DMDEPKG_NDEBUG
+  GCC:RELEASE_*_*_CC_FLAGS   = -DMDEPKG_NDEBUG
