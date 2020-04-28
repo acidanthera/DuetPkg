@@ -118,7 +118,6 @@ BdsBootDeviceSelect (
   )
 {
   EFI_STATUS                    Status;
-  UINT16                        NonBlockNumber;
   UINTN                         Index;
   EFI_HANDLE                    *FileSystemHandles;
   UINTN                         NumberFileSystemHandles;
@@ -133,7 +132,6 @@ BdsBootDeviceSelect (
   //
   // If there is simple file protocol which does not consume block Io protocol, create a boot option for it here.
   //
-  NonBlockNumber = 0;
   Status = gBS->LocateHandleBuffer (
     ByProtocol,
     &gEfiSimpleFileSystemProtocolGuid,
