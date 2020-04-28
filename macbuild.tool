@@ -21,17 +21,11 @@ imgbuild() {
     "${BUILD_DIR_ARCH}/EfiLoaderRebased.efi" "${BUILD_DIR}/FV/DxeIpl${TARGETARCH}.z" \
     "${BUILD_DIR}/FV/DxeMain${TARGETARCH}.z" "${BUILD_DIR}/FV/DUETEFIMAINFV${TARGETARCH}.z" || exit 1
 
-  PAGE_TABLE=0x67000
-  EL_SIZE=$(stat -f "%z" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
-  if (( $((EL_SIZE)) > $((${PAGE_TABLE} - 0x22000)) )); then
-    echo "ERROR: boot file bigger than low-ebda permits!"
-    exit 1
-  fi
-
   cat "${BOOTSECTOR_BIN_DIR}/Start${TARGETARCH}.com" "${BOOTSECTOR_BIN_DIR}/Efi${TARGETARCH}.com" \
     "${BUILD_DIR}/FV/Efildr${TARGETARCH}" > "${BUILD_DIR}/FV/Efildr${TARGETARCH}Pure" || exit 1
 
   if [ "${TARGETARCH}" = "X64" ]; then
+    PAGE_TABLE=0x67000
     "${FV_TOOLS}/GenPage" "${BUILD_DIR}/FV/Efildr${TARGETARCH}Pure" \
       -b ${PAGE_TABLE} -f $((${PAGE_TABLE} - 0x20000)) \
       -o "${BUILD_DIR}/FV/Efildr${TARGETARCH}Out" || exit 1
