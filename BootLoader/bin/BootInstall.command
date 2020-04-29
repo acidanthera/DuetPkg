@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Install booter on physical disk.
+
 cd "$(dirname "$0")"
 diskutil list
 echo "Enter disk number to install to:"

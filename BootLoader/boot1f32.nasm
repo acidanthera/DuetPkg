@@ -182,7 +182,7 @@ gExtInfo            times   25  db  0
 gFileName           db      "BOOT       " ; Used as a magic string in boot0
 
 ;--------------------------------------------------------------------------
-; Boot code is loaded at 0:7C00h.
+; Boot code is loaded at 0:E000h.
 ;
 start:
     ;
