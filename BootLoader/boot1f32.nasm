@@ -62,8 +62,7 @@ kSectorBytes        EQU     512                                 ; sector size in
 kBootSignature      EQU     0xAA55                              ; boot sector signature
 
 kBoot1StackAddress  EQU     0xFFF0                              ; boot1 stack pointer
-kBoot1LoadAddr      EQU     0x7C00                              ; boot1 load address
-kBoot1RelocAddr     EQU     0xE000                              ; boot1 relocated address
+kBoot1LoadAddr      EQU     0xE000                              ; boot1 load address
 
 kBoot2Sectors       EQU     (480 * 1024 - 512) / kSectorBytes   ; max size of 'boot' file in sectors
 kBoot2Segment       EQU     0x2000                              ; boot2 load segment
@@ -595,7 +594,9 @@ error_str       db      'error', NULL
 ; that the 'times' argument is negative.
 
 pad_table_and_sig:
-    times           510-($-$$) db 0
+    times           496-($-$$) db 0
+    ; We will put volume magic identifier here
+    times           14 db 0
     dw              kBootSignature
 
     ABSOLUTE        kBoot1LoadAddr + kSectorBytes

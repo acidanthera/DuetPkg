@@ -18,6 +18,7 @@ Revision History:
 
 --*/
 #include "EfiLdr.h"
+#include <FlashLayout.h>
 
 EFI_STATUS
 EfiAddMemoryDescriptor(
@@ -272,7 +273,19 @@ GenMemoryMap (
     RShiftU64 (EBDAsize + EFI_PAGE_MASK, EFI_PAGE_SHIFT),
     EFI_MEMORY_UC
     );
-  
+
+  //
+  // Reserve our bootstrap code as we may access this memory later.
+  //
+  EfiAddMemoryDescriptor (
+    NumberOfMemoryMapEntries,
+    EfiMemoryDescriptor,
+    EfiReservedMemoryType,
+    (EFI_PHYSICAL_ADDRESS) BOOT1_BASE,
+    1,
+    EFI_MEMORY_UC
+    );
+
   //
   // Update MemoryMap according to Ceiling
   //

@@ -41,4 +41,14 @@ Abstract:
 #define NV_FTW_FVB_BLOCK_NUM        (NV_FTW_FVB_SIZE / FV_BLOCK_SIZE)
 
 #define NV_STORAGE_FILE_PATH        L".\\Efivar.bin"
+
+#define BOOT1_BASE                  ((UINTN) 0xE000U)
+#define BOOT1_MAGIC                 0xAA55
+
+typedef struct {
+  UINT8  LoaderCode[496];
+  UINT8  Signature[14];
+  UINT16 Magic;
+} BOOT1_LOADER;
+
 #endif // _EFI_FLASH_LAYOUT

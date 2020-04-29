@@ -12,7 +12,15 @@ Acidanthera variant of DuetPkg. Specialties:
 - Setup and graphical interface removed.
 - Resolved PCIe device path instead of PCI.
 - Increased variable storage size to 64 KB.
+- Always loads from bootstrapped volume first.
 - Some changes inherited from Clover EFI bootloader.
+
+## Error codes
+
+- `BOOT MISMATCH!` - Bootstrap partition signature identification failed.
+    BDS code will try to lookup `EFI/OC/OpenCore.efi` on any partition in 3 seconds.
+- `BOOT FAIL!` - No bootable `EFI/OC/OpenCore.efi` file found on any partition.
+    BDS code will dead-loop CPU in 3 seconds.
 
 ## Compilation
 

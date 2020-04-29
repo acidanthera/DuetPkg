@@ -74,6 +74,7 @@
   gEdkiiVariableLockProtocolGuid                ## PROTOCOL CONSUMES
   gEfiBdsArchProtocolGuid                       ## PROTOCOL PRODUCES
   gEfiCapsuleArchProtocolGuid                   ## PROTOCOL PRODUCES
+  gEfiBlockIoProtocolGuid
 
 [Pcd]
   gEfiMdePkgTokenSpaceGuid.PcdUefiVariableDefaultPlatformLangCodes  ## CONSUMES

@@ -60,7 +60,7 @@ VERBOSE             EQU  0
 kBoot0Segment       EQU  0x0000
 kBoot0Stack         EQU  0xFFF0         ; boot0 stack pointer
 kBoot0LoadAddr      EQU  0x7C00         ; boot0 load address
-kBoot0RelocAddr     EQU  0xE000         ; boot0 relocated address
+kBoot1LoadAddr      EQU  0xE000         ; boot1 load address
 
 kMBRBuffer          EQU  0x1000         ; MBR buffer address
 kLBA1Buffer         EQU  0x1200         ; LBA1 - GPT Partition Table Header buffer address
@@ -172,7 +172,7 @@ kBasicDataGUID      EQU  0xC79926B7     ; last 4 bytes of Basic Data System Part
 
     SEGMENT .text
 
-    ORG     kBoot0RelocAddr
+    ORG     kBoot0LoadAddr
 
 ;--------------------------------------------------------------------------
 ; Boot code is loaded at 0:7C00h.
@@ -190,25 +190,6 @@ start:
 
     mov     es, ax                  ; es <- 0
     mov     ds, ax                  ; ds <- 0
-
-    ;
-    ; Relocate boot0 code.
-    ;
-    mov     si, kBoot0LoadAddr      ; si <- source
-    mov     di, kBoot0RelocAddr     ; di <- destination
-    cld                             ; auto-increment SI and/or DI registers
-    mov     cx, kSectorBytes/2      ; copy 256 words
-    repnz   movsw                   ; repeat string move (word) operation
-
-    ;
-    ; Code relocated, jump to start_reloc in relocated location.
-    ;
-    jmp     kBoot0Segment:start_reloc
-
-;--------------------------------------------------------------------------
-; Start execution from the relocated location.
-;
-start_reloc:
 
     DebugChar('>')
 
@@ -336,7 +317,7 @@ DebugChar('J')
     LogString(done_str)
 %endif
 
-    jmp     kBoot0LoadAddr
+    jmp     kBoot1LoadAddr
 
     ;
     ; Found Protective MBR Partition Type: 0xEE
@@ -447,7 +428,7 @@ loadBootSector:
     pusha
 
     mov     al, 3
-    mov     bx, kBoot0LoadAddr
+    mov     bx, kBoot1LoadAddr
     call    load
     jc      error
 
@@ -461,7 +442,7 @@ loadBootSector:
     ;
     ; Looking for boot1f32 magic string.
     ;
-    mov     ax, [kBoot0LoadAddr + kFAT32BootCodeOffset]
+    mov     ax, [kBoot1LoadAddr + kFAT32BootCodeOffset]
     cmp     ax, kBoot1FAT32Magic
     jne     .exit
 
@@ -469,7 +450,7 @@ loadBootSector:
     ;
     ; Check for boot block signature 0xAA55
     ;
-    cmp     WORD [kBoot0LoadAddr + kSectorBytes - 2], kBootSignature
+    cmp     WORD [kBoot1LoadAddr + kSectorBytes - 2], kBootSignature
 
 .exit:
 

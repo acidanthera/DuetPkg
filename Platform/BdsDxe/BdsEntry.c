@@ -20,6 +20,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 
 #include <Guid/GlobalVariable.h>
 #include <Guid/EventGroup.h>
+#include <FlashLayout.h>
 
 #include <Library/BaseMemoryLib.h>
 #include <Library/DebugLib.h>
@@ -32,6 +33,7 @@ WITHOUT WARRANTIES OR REPRESENTATIONS OF ANY KIND, EITHER EXPRESS OR IMPLIED.
 #include <Library/UefiLib.h>
 
 #include <Protocol/Capsule.h>
+#include <Protocol/BlockIo.h>
 #include <Protocol/VariableLock.h>
 
 ///
@@ -105,6 +107,77 @@ BdsInitialize (
   return Status;
 }
 
+STATIC
+EFI_STATUS
+BdsCheckSignature (
+  IN EFI_HANDLE   Handle
+  )
+{
+  EFI_STATUS                    Status;
+  volatile BOOT1_LOADER         *SelfSignature;
+  BOOT1_LOADER                  *DiskSignature;
+  UINTN                         DiskSignatureSize;
+  EFI_BLOCK_IO_PROTOCOL         *BlockIo;
+  UINTN                         Index;
+  UINT8                         NonZero;
+
+  SelfSignature = (volatile BOOT1_LOADER *) (BOOT1_BASE);
+
+  if (SelfSignature->Magic != BOOT1_MAGIC) {
+    return EFI_UNSUPPORTED;
+  }
+
+  Status = gBS->HandleProtocol (
+    Handle,
+    &gEfiBlockIoProtocolGuid,
+    (VOID **) &BlockIo
+    );
+
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  DiskSignatureSize = ALIGN_VALUE (
+    MAX (sizeof (*DiskSignature), BlockIo->Media->BlockSize),
+    BlockIo->Media->BlockSize
+    );
+  DiskSignature = AllocatePool (DiskSignatureSize);
+
+  if (DiskSignature == NULL) {
+    return EFI_OUT_OF_RESOURCES;
+  }
+
+  Status = BlockIo->ReadBlocks (
+    BlockIo,
+    BlockIo->Media->MediaId,
+    0,
+    DiskSignatureSize,
+    DiskSignature
+    );
+
+  if (!EFI_ERROR (Status) && DiskSignature->Magic == SelfSignature->Magic) {
+    NonZero = 0;
+
+    for (Index = 0; Index < sizeof (SelfSignature->Signature); ++Index) {
+      if (SelfSignature->Signature[Index] != DiskSignature->Signature[Index]) {
+        Status = EFI_NOT_FOUND;
+        break;
+      }
+      NonZero |= SelfSignature->Signature[Index];
+    }
+
+    if (NonZero == 0) {
+      Status = EFI_NOT_FOUND;
+    }
+  } else {
+    Status = EFI_UNSUPPORTED;
+  }
+
+  FreePool (DiskSignature);
+
+  return Status; 
+}
+
 /**
 
   This function attempts to boot for the boot order specified
@@ -114,7 +187,7 @@ BdsInitialize (
 STATIC
 VOID
 BdsBootDeviceSelect (
-  VOID
+  IN BOOLEAN  RequireValidDisk
   )
 {
   EFI_STATUS                    Status;
@@ -145,6 +218,16 @@ BdsBootDeviceSelect (
   }
 
   for (Index = 0; Index < NumberFileSystemHandles; Index++) {
+    //
+    // Check matching volume DuetPkg was booted from.
+    //
+    if (RequireValidDisk) {
+      Status = BdsCheckSignature (FileSystemHandles[Index]);
+      if (EFI_ERROR (Status)) {
+        continue;
+      }
+    }
+
     //
     // Do the removable Media thing. \EFI\BOOT\boot{machinename}.EFI
     //  machinename is ia32, ia64, x64, ...
@@ -383,12 +466,19 @@ BdsEntry (
   //
   // BDS select the boot device to load OS
   //
-  BdsBootDeviceSelect ();
+  BdsBootDeviceSelect (TRUE);
 
   //
-  // Show something meaningful.
+  // Try to boot any volume
   //
-  gST->ConOut->OutputString (gST->ConOut, L"FAILED TO BOOT\r\n");
+  gST->ConOut->OutputString (gST->ConOut, L"BOOT MISMATCH!\r\n");
+  gBS->Stall (3000000);
+  BdsBootDeviceSelect (FALSE);
+
+  //
+  // Abort with error.
+  //
+  gST->ConOut->OutputString (gST->ConOut, L"BOOT FAIL!\r\n");
   gBS->Stall (3000000);
   CpuDeadLoop ();
 
