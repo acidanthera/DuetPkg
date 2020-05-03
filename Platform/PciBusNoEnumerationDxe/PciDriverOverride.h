@@ -61,29 +61,6 @@ Returns:
 ;
 
 EFI_STATUS
-AddDriver (
-  IN PCI_IO_DEVICE     *PciIoDevice,
-  IN EFI_HANDLE        DriverImageHandle
-  )
-/*++
-
-Routine Description:
-
-  TODO: Add function description
-
-Arguments:
-
-  PciIoDevice       - TODO: add argument description
-  DriverImageHandle - TODO: add argument description
-
-Returns:
-
-  TODO: add return values
-
---*/
-;
-
-EFI_STATUS
 EFIAPI
 GetDriver (
   IN EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL              *This,
