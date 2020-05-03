@@ -1163,7 +1163,6 @@ Returns:
 
   PciIoDevice->Attributes         = 0;
   PciIoDevice->Supports           = 0;
-  PciIoDevice->BusOverride        = FALSE;
   PciIoDevice->IsPciExp           = FALSE;
 
   CopyMem (&(PciIoDevice->Pci), Pci, sizeof (PCI_TYPE01));
@@ -1173,7 +1172,6 @@ Returns:
   //
 
   InitializePciIoInstance (PciIoDevice);
-  Status  = InitializePciDriverOverrideInstance (PciIoDevice);
 
   if (EFI_ERROR (Status)) {
     gBS->FreePool (PciIoDevice);
@@ -1184,11 +1182,6 @@ Returns:
   // Initialize the reserved resource list
   //
   InitializeListHead (&PciIoDevice->ReservedResourceList);
-
-  //
-  // Initialize the driver list
-  //
-  InitializeListHead (&PciIoDevice->OptionRomDriverList);
 
   //
   // Initialize the child list

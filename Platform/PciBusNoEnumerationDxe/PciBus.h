@@ -32,9 +32,6 @@ Revision History
 #include <Protocol/Decompress.h>
 #include <Protocol/UgaIo.h>
 #include <Protocol/LoadedImage.h>
-#include <Protocol/BusSpecificDriverOverride.h>
-
-#include <Guid/PciOptionRomTable.h>
 
 #include <IndustryStandard/Pci.h>
 #include <IndustryStandard/Acpi.h>
@@ -105,7 +102,6 @@ typedef struct _PCI_IO_DEVICE {
   EFI_PCI_IO_PROTOCOL                       PciIo;
   LIST_ENTRY                            Link;
 
-  EFI_BUS_SPECIFIC_DRIVER_OVERRIDE_PROTOCOL PciDriverOverride;
   EFI_DEVICE_PATH_PROTOCOL                  *DevicePath;
   EFI_PCI_ROOT_BRIDGE_IO_PROTOCOL           *PciRootBridgeIo;
 
@@ -163,24 +159,9 @@ typedef struct _PCI_IO_DEVICE {
   UINT32                                    Decodes;
 
   //
-  // The OptionRom Size
-  //
-  UINT64                                    RomSize;
-
-  //
-  // TRUE if there is any EFI driver in the OptionRom
-  //
-  BOOLEAN                                   BusOverride;
-
-  //
   //  A list tracking reserved resource on a bridge device
   //
   LIST_ENTRY                            ReservedResourceList;
-
-  //
-  // A list tracking image handle of platform specific overriding driver
-  //
-  LIST_ENTRY                            OptionRomDriverList;
 
   BOOLEAN                                   IsPciExp;
 
@@ -189,9 +170,6 @@ typedef struct _PCI_IO_DEVICE {
 
 #define PCI_IO_DEVICE_FROM_PCI_IO_THIS(a) \
   CR (a, PCI_IO_DEVICE, PciIo, PCI_IO_DEVICE_SIGNATURE)
-
-#define PCI_IO_DEVICE_FROM_PCI_DRIVER_OVERRIDE_THIS(a) \
-  CR (a, PCI_IO_DEVICE, PciDriverOverride, PCI_IO_DEVICE_SIGNATURE)
 
 #define PCI_IO_DEVICE_FROM_LINK(a) \
   CR (a, PCI_IO_DEVICE, Link, PCI_IO_DEVICE_SIGNATURE)
@@ -212,7 +190,6 @@ extern UINT64                      gAllZero;
 #include "PciDeviceSupport.h"
 #include "PciEnumerator.h"
 #include "PciEnumeratorSupport.h"
-#include "PciDriverOverride.h"
 #include "PciPowerManagement.h"
 
 

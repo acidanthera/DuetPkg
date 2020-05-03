@@ -47,8 +47,6 @@
   PciEnumeratorSupport.h
   PciPowerManagement.h
   PciPowerManagement.c
-  PciDriverOverride.h
-  PciDriverOverride.c
   PciEnumerator.c
   PciEnumeratorSupport.c
   PciCommand.c
@@ -61,7 +59,6 @@
   gEfiPciRootBridgeIoProtocolGuid
   gEfiPciIoProtocolGuid
   gEfiDevicePathProtocolGuid
-  gEfiBusSpecificDriverOverrideProtocolGuid
   gEfiDecompressProtocolGuid
   
 [Guids]

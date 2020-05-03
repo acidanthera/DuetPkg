@@ -256,31 +256,17 @@ Returns:
   UINT8               PciExpressCapRegOffset;
 
   //
-  // Install the pciio protocol, device path protocol and 
-  // Bus Specific Driver Override Protocol
+  // Install the pciio protocol, device path protocol
   //
 
-  if (PciIoDevice->BusOverride) {
-    Status = gBS->InstallMultipleProtocolInterfaces (
-                  &PciIoDevice->Handle,             
-                  &gEfiDevicePathProtocolGuid,
-                  PciIoDevice->DevicePath,
-                  &gEfiPciIoProtocolGuid,
-                  &PciIoDevice->PciIo,
-                  &gEfiBusSpecificDriverOverrideProtocolGuid,
-                  &PciIoDevice->PciDriverOverride,
-                  NULL
-                  );
-  } else {
-    Status = gBS->InstallMultipleProtocolInterfaces (
-                  &PciIoDevice->Handle,             
-                  &gEfiDevicePathProtocolGuid,
-                  PciIoDevice->DevicePath,
-                  &gEfiPciIoProtocolGuid,
-                  &PciIoDevice->PciIo,
-                  NULL
-                  );
-  }
+  Status = gBS->InstallMultipleProtocolInterfaces (
+                &PciIoDevice->Handle,             
+                &gEfiDevicePathProtocolGuid,
+                PciIoDevice->DevicePath,
+                &gEfiPciIoProtocolGuid,
+                &PciIoDevice->PciIo,
+                NULL
+                );
 
   if (EFI_ERROR (Status)) {
     return Status;
@@ -417,27 +403,14 @@ Returns:
     //
     // Un-install the device path protocol and pci io protocol
     //
-    if (PciIoDevice->BusOverride) {
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Handle,
-                      &gEfiDevicePathProtocolGuid,
-                      PciIoDevice->DevicePath,
-                      &gEfiPciIoProtocolGuid,
-                      &PciIoDevice->PciIo,
-                      &gEfiBusSpecificDriverOverrideProtocolGuid,
-                      &PciIoDevice->PciDriverOverride,
-                      NULL
-                      );
-    } else {
-      Status = gBS->UninstallMultipleProtocolInterfaces (
-                      Handle,
-                      &gEfiDevicePathProtocolGuid,
-                      PciIoDevice->DevicePath,
-                      &gEfiPciIoProtocolGuid,
-                      &PciIoDevice->PciIo,
-                      NULL
-                      );
-    }
+    Status = gBS->UninstallMultipleProtocolInterfaces (
+                    Handle,
+                    &gEfiDevicePathProtocolGuid,
+                    PciIoDevice->DevicePath,
+                    &gEfiPciIoProtocolGuid,
+                    &PciIoDevice->PciIo,
+                    NULL
+                    );
 
     if (EFI_ERROR (Status)) {
       gBS->OpenProtocol (
