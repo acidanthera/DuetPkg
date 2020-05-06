@@ -108,7 +108,7 @@ VOID
 EFIAPI
 InstallInterruptHandler (
   UINTN Vector,
-  VOID  (*Handler)(VOID)
+  VOID  (EFIAPI *Handler)(VOID)
   );
 
 VOID

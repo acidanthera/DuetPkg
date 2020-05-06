@@ -24,7 +24,11 @@ imgbuild() {
   # Calculate page table location for 64-bit builds.
   # Page table must be 4K aligned, bootsectors are 4K each, and 0x20000 is base address.
   if [ "${TARGETARCH}" = "X64" ]; then
-    EL_SIZE=$(stat -f "%z" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
+    if [ "$(uname)" = "Darwin" ]; then
+      EL_SIZE=$(stat -f "%z" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
+    else
+      EL_SIZE=$(stat --printf="%s\n" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
+    fi
     export PAGE_TABLE_OFF=$(printf "0x%x" $(((${EL_SIZE} + 0x2000 + 0xFFF) & ~0xFFF)))
     export PAGE_TABLE=$(printf "0x%x" $((${PAGE_TABLE_OFF} + 0x20000)))
     BOOTSECTOR_SUFFIX="_${PAGE_TABLE}"

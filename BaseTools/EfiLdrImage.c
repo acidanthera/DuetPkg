@@ -154,7 +154,10 @@ Return:
       length = filesize-offset;
     }
 
-    fread (Buffer, length, 1, in);
+    int r = fread (Buffer, length, 1, in);
+    if (r < 0) {
+      abort();
+    }
     fwrite (Buffer, length, 1, out);
     offset += length;
   }

@@ -1101,7 +1101,7 @@ Returns:
   for (InterruptVector = 0; InterruptVector < 0x20; InterruptVector++) {
     InstallInterruptHandler (
       InterruptVector,
-      (VOID (*)(VOID))(UINTN)((UINTN)SystemExceptionHandler + mExceptionCodeSize * InterruptVector)
+      (VOID (*EFIAPI)(VOID))(UINTN)((UINTN)SystemExceptionHandler + mExceptionCodeSize * InterruptVector)
       );
   }
 

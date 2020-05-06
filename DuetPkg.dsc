@@ -226,6 +226,6 @@
   XCODE:DEBUG_*_*_CC_FLAGS   = -fno-unwind-tables -flto -Os -DMDEPKG_NDEBUG
   XCODE:RELEASE_*_*_CC_FLAGS = -fno-unwind-tables -flto -Os -DMDEPKG_NDEBUG
 
-  GCC:NOOPT_*_*_CC_FLAGS     =
-  GCC:DEBUG_*_*_CC_FLAGS     = -DMDEPKG_NDEBUG
-  GCC:RELEASE_*_*_CC_FLAGS   = -DMDEPKG_NDEBUG
+  GCC:NOOPT_*_*_CC_FLAGS     = -Wno-unused-but-set-variable
+  GCC:DEBUG_*_*_CC_FLAGS     = -DMDEPKG_NDEBUG -Wno-unused-but-set-variable
+  GCC:RELEASE_*_*_CC_FLAGS   = -DMDEPKG_NDEBUG -Wno-unused-but-set-variable
