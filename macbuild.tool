@@ -59,8 +59,13 @@ imgbuild() {
 }
 
 package() {
-  if [ ! -d "$1" ] || [ ! -d "$1"/../FV ]; then
-    echo "Missing package directory"
+  if [ ! -d "$1" ]; then
+    echo "Missing package directory $1"
+    exit 1
+  fi
+  
+  if [ ! -d "$1"/../FV ]; then
+    echo "Missing FV directory $1/../FV"
     exit 1
   fi
 
