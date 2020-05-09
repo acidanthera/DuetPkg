@@ -28,9 +28,13 @@ imgbuild() {
       EL_SIZE=$(stat -f "%z" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
     else
       EL_SIZE=$(stat --printf="%s\n" "${BUILD_DIR}/FV/Efildr${TARGETARCH}")
-    fi
-    export PAGE_TABLE_OFF=$(printf "0x%x" $(((${EL_SIZE} + 0x2000 + 0xFFF) & ~0xFFF)))
-    export PAGE_TABLE=$(printf "0x%x" $((${PAGE_TABLE_OFF} + 0x20000)))
+  fi
+    PAGE_TABLE_OFF=$( printf "0x%x" $(( (EL_SIZE + 0x2000 + 0xFFF) & ~0xFFF )) )
+    PAGE_TABLE=$( printf "0x%x" $(( PAGE_TABLE_OFF + 0x20000 )) )
+
+    export PAGE_TABLE_OFF
+    export PAGE_TABLE
+
     BOOTSECTOR_SUFFIX="_${PAGE_TABLE}"
   else
     BOOTSECTOR_SUFFIX=""
@@ -63,7 +67,7 @@ package() {
     echo "Missing package directory $1"
     exit 1
   fi
-  
+
   if [ ! -d "$1"/../FV ]; then
     echo "Missing FV directory $1/../FV"
     exit 1
@@ -79,7 +83,7 @@ package() {
   imgbuild
 }
 
-cd $(dirname "$0")
+cd "$(dirname "$0")" || exit 1
 
 BOOTSECTORS="$(pwd)/BootSector/bin"
 FV_TOOLS="$(pwd)/BaseTools/bin.$(uname)"
@@ -102,7 +106,7 @@ if [ "${INTREE}" != "" ]; then
   cd .. || exit 1
 
   build -a "${TARGETARCH}" -b "${TARGET}" -t XCODE5 -p DuetPkg/DuetPkg.dsc || exit 1
-  
+
   BUILD_DIR="${WORKSPACE}/Build/DuetPkg/${TARGET}_XCODE5"
   BUILD_DIR_ARCH="${BUILD_DIR}/${TARGETARCH}"
   imgbuild
@@ -113,5 +117,13 @@ else
   DEPNAMES=('EfiPkg')
   DEPURLS=('https://github.com/acidanthera/EfiPkg')
   DEPBRANCHES=('master')
+
+  export TARGETS
+  export ARCHS
+  export SELFPKG
+  export DEPNAMES
+  export DEPURLS
+  export DEPBRANCHES
+
   src=$(/usr/bin/curl -Lfs https://raw.githubusercontent.com/acidanthera/ocbuild/master/efibuild.sh) && eval "$src" || exit 1
 fi

@@ -6,6 +6,13 @@ env:
 matrix:
   include:
   - os: osx
+    name: "Check Shell Scripts"
+
+    script:
+    - HOMEBREW_NO_AUTO_UPDATE=1 brew install shellcheck
+    - find . \( -name "*.tool" -o -name "*.command" -o -name "*.sh" \) -exec shellcheck --severity=info {} \;
+
+  - os: osx
     name: "Build macOS XCODE5"
     osx_image: xcode10.2
     compiler: clang
