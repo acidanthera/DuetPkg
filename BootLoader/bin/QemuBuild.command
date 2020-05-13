@@ -8,7 +8,7 @@ cd "$(dirname "$0")" || exit
 
 if [ "$(which qemu-img)" = "" ]; then
   echo "QEMU installation missing"
-#exit 1
+  exit 1
 fi
 
 if [ ! -d ROOT ]; then
