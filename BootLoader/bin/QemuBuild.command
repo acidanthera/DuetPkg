@@ -8,7 +8,7 @@ cd "$(dirname "$0")" || exit
 
 if [ "$(which qemu-img)" = "" ]; then
   echo "QEMU installation missing"
-  exit 1
+#exit 1
 fi
 
 if [ ! -d ROOT ]; then
@@ -26,7 +26,7 @@ diskutil partitionDisk "${newDevice}" 1 MBR fat32 TEST R
 # boot install script
 diskutil list
 N=$(echo "$newDevice" | tr -dc '0-9')
-echo N "$N"
+echo "Will be installed to Disk ${N}"
 
 
 if [[ ! $(diskutil info disk"${N}" |  sed -n 's/.*Device Node: *//p') ]]
